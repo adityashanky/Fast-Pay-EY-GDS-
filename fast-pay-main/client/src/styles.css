@@ -28,3 +28,37 @@ body {
 .container {
     max-width: 900px;
 }
+/* Apply transition to everything */
+* {
+    transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out;
+}
+
+/* Light Theme */
+[data-theme="light"] {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+/* Ensure main content also transitions */
+.main-container {
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Light Theme - Main Container */
+[data-theme="light"] .main-container {
+    background-color: #f8f9fa;
+    color: #000;
+}
+
+/* Dark Theme - Main Container */
+[data-theme="dark"] .main-container {
+    background-color: #1e1e1e;
+    color: #fff;
+}

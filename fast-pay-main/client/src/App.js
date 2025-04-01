@@ -9,6 +9,7 @@ import "./styles.css"; // Custom styles
 
 function App() {
     const [user, setUser] = useState(null);
+    const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -17,14 +18,23 @@ function App() {
         }
     }, []);
 
+    useEffect(() => {
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+    }, [theme]);
+
     const handleLogout = () => {
         localStorage.removeItem("user");
         setUser(null);
     };
 
+    const toggleTheme = () => {
+        setTheme(prevTheme => (prevTheme === "light" ? "dark" : "light"));
+    };
+
     return (
         <Router>
-            <Navbar bg="white" expand="md" className="shadow-sm py-3">
+            <Navbar bg={theme === "light" ? "white" : "dark"} variant={theme} expand="md" className="shadow-sm py-3">
                 <Container>
                     <Navbar.Brand as={Link} to="/" className="fw-bold text-primary fs-4">
                         🚀 Fast-Pay
@@ -32,6 +42,9 @@ function App() {
                     <Navbar.Toggle aria-controls="navbar-nav" />
                     <Navbar.Collapse id="navbar-nav" className="justify-content-end">
                         <Nav className="align-items-center">
+                            <Button variant={theme === "light" ? "dark" : "light"} onClick={toggleTheme} className="me-3">
+                                {theme === "light" ? "🌙 Dark" : "☀️ Light"}
+                            </Button>
                             {user ? (
                                 <>
                                     <Nav.Link as={Link} to="/transaction" className="fw-medium text-dark">
@@ -75,7 +88,7 @@ function App() {
                 </Container>
             </Navbar>
 
-            <Container className="mt-4">
+            <Container className={`mt-4 main-container`}>
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
